@@ -1,21 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
+  <title>Aplikacja do sortowania książek</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-    <form id="sortForm">
-        <label for="data">Enter data:</label><br>
-        <input type="text" id="data" name="data"><br>
-        <input type="submit" value="Sort">
-      </form>
-
-      <p id="result"></p>
-
-
-    <script src="script.js"></script>
+  <form id="sortForm">
+    <label for="dataType">Rodzaj danych:</label>
+    <select id="dataType">
+      <option value="random">Losowe</option>
+      <option value="partiallySorted">Częściowo posortowane</option>
+    </select>
+    <label for="algorithm">Algorytm:</label>
+    <select id="algorithm">
+      <option value="bubble">Sortowanie bąbelkowe</option>
+      <option value="insertion">Sortowanie przez wstawianie</option>
+      <option value="selection">Sortowanie przez wybieranie</option>
+    </select>
+    <label for="direction">Kierunek:</label>
+    <select id="direction">
+      <option value="asc">Rosnąco</option>
+      <option value="desc">Malejąco</option>
+    </select>
+    <button type="submit">Sortuj</button>
+  </form>
+  <div id="data"></div>
+  <div id="result"></div>
+  <script src="script.js"></script>
 </body>
 </html>
