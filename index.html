@@ -5,18 +5,33 @@
   <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
+  <h2>BIBLIOTEKA APP - DODAWAJ WYSZUKUJ SORTUJ </h2>
+  <form id="addBookForm">
+    <label for="title">Tytuł:</label>
+    <input type="text" id="title" name="title" required>
+    <label for="author">Autor:</label>
+    <input type="text" id="author" name="author" required>
+    <label for="year">Rok:</label>
+    <input type="number" id="year" name="year" required>
+    <br/>
+    <button type="submit">Dodaj książkę</button>
+  </form>
+  <form id="searchForm">
+    <label for="searchTitle">Tytuł:</label>
+    <input type="text" id="searchTitle">
+    <label for="searchAuthor">Autor:</label>
+    <input type="text" id="searchAuthor">
+    <label for="searchYear">Rok:</label>
+    <input type="number" id="searchYear">
+    <br/>
+    <button type="submit">Szukaj</button>
+  </form>
+  <form id="deleteBookForm">
+    <label for="bookId">Wpisz numer ID książki by Usunąć:</label>
+    <input type="text" id="bookId" placeholder="Wpisz numer ID książki...">
+    <input type="submit" value="Usuń książkę">
+  </form>
   <form id="sortForm">
-    <label for="dataType">Rodzaj danych:</label>
-    <select id="dataType">
-      <option value="random">Losowe</option>
-      <option value="partiallySorted">Częściowo posortowane</option>
-    </select>
-    <label for="algorithm">Algorytm:</label>
-    <select id="algorithm">
-      <option value="bubble">Sortowanie bąbelkowe</option>
-      <option value="insertion">Sortowanie przez wstawianie</option>
-      <option value="selection">Sortowanie przez wybieranie</option>
-    </select>
     <label for="direction">Kierunek:</label>
     <select id="direction">
       <option value="asc">Rosnąco</option>
@@ -24,7 +39,11 @@
     </select>
     <button type="submit">Sortuj</button>
   </form>
+  <h3>ZBIÓR KSIĄŻEK</h3>
   <div id="data"></div>
+  <h3>WYNIKI WYSZUKANIA</h3>
+  <div id="searchResults"></div>
+  <h3>WYNIKI SORTOWANIA</h3>
   <div id="result"></div>
   <script src="script.js"></script>
 </body>

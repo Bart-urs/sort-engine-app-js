@@ -1,4 +1,4 @@
-body {
+/* body {
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
     color: #333;
@@ -22,4 +22,94 @@ body {
     border: 1px solid #ccc;
     background-color: #fff;
     border-radius: 5px;
+  } */
+
+
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    padding: 20px;
+  }
+  
+  h2, h3 {
+    color: #444;
+  }
+  
+  form {
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  input[type="text"], input[type="number"], select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+  }
+  
+  button, input[type="submit"] {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover, input[type="submit"]:hover {
+    background-color: #0056b3;
+  }
+
+  h3 {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+  }
+  
+  #searchResults, #data, #result {
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+  }
+  
+  #searchResults::before, #data::before, #result::before {
+    content: '';
+    display: block;
+    height: 1px;
+    margin-bottom: 20px;
+    background: #ddd;
+  }
+
+  input[type="text"], input[type="number"], select {
+    width: auto;
+    padding: 10px;
+    margin: 0 10px 20px 10px;
+    box-sizing: border-box;
+    max-width: 100%;
+  }
+
+  @media (max-width: 600px) {
+    body {
+      padding: 10px;
+    }
+  
+    form, #searchResults, #data, #result {
+      padding: 10px;
+    }
+  
+    input[type="text"], input[type="number"], select {
+      margin-bottom: 10px;
+    }
   }

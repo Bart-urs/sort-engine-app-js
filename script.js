@@ -1,33 +1,44 @@
-function generateRandomData() {
-    var data = [];
-    for (var i = 0; i < 100; i++) {
-      data.push({
-        title: 'Book ' + i,
-        author: 'Author ' + i,
-        year: Math.floor(Math.random() * 100) + 1900
-      });
+var bookCollection = [];
+
+function displayBooks() {
+  var formattedBooks = bookCollection.map(function(book, index) {
+    return (index + 1) + '. ID: ' + book.id + ' Tytuł: "' + book.title + '" Autor: "' + book.author + '" Rok: ' + book.year;
+  }).join('<br>');
+  document.getElementById('data').innerHTML = formattedBooks;
+}
+
+window.addEventListener('load', function() {
+  var dataTypeSelect = document.getElementById('dataType');
+
+  // wczytuje zbiór książek z localStorage
+  var storedBooks = localStorage.getItem('bookCollection');
+  bookCollection = storedBooks ? JSON.parse(storedBooks) : [];
+
+  // dodaje unikalne ID do każdej książki, jeśli jeszcze go nie ma
+  bookCollection = bookCollection.map(function(book, index) {
+    if (!book.id) {
+      book.id = Date.now() + index;
     }
-    return data;
-  }
-  
-  window.addEventListener('load', function() {
-    var dataTypeSelect = document.getElementById('dataType');
-    updateData(dataTypeSelect.value);
-  
-    dataTypeSelect.addEventListener('change', function() {
-      updateData(this.value);
-    });
+    return book;
   });
-  
-  function updateData(dataType) {
-    var data;
-    if (dataType === 'random') {
-      data = generateRandomData();
-    } else if (dataType === 'partiallySorted') {
-      data = generatePartiallySortedData();
-    }
-    document.getElementById('data').innerHTML = JSON.stringify(data);
+
+  // zapisuje zbiór książek w localStorage
+  localStorage.setItem('bookCollection', JSON.stringify(bookCollection));
+
+  // aktualizuje wyświetlane dane
+  displayBooks();
+});
+
+function updateData(dataType) {
+  if (dataType === 'partiallySorted') {
+    bookCollection = generatePartiallySortedData();
+  } else {
+    // wczytuje zbiór książek z localStorage
+    var storedBooks = localStorage.getItem('bookCollection');
+    bookCollection = storedBooks ? JSON.parse(storedBooks) : [];
   }
+  displayBooks();
+}
 
   function swap(array, index1, index2) {
     var temp = array[index1];
@@ -94,25 +105,16 @@ function generateRandomData() {
   document.getElementById('sortForm').addEventListener('submit', async function(event) {
     event.preventDefault();
   
-    var data = document.getElementById('data').innerHTML;
-    var dataArray = JSON.parse(data);
+    var dataArray = [...bookCollection];
   
     if (!isBookArray(dataArray)) {
       document.getElementById('result').textContent = 'Invalid data. Please enter book data in the correct format.';
       return;
     }
   
-    var algorithm = document.getElementById('algorithm').value;
     var direction = document.getElementById('direction').value;
   
-    var sortedArray;
-    if (algorithm === 'bubble') {
-      sortedArray = await bubbleSort(dataArray, 'title');
-    } else if (algorithm === 'insertion') {
-      sortedArray = await insertionSort(dataArray, 'title');
-    } else if (algorithm === 'selection') {
-      sortedArray = await selectionSort(dataArray, 'title');
-    }
+    var sortedArray = await bubbleSort(dataArray, 'title');
   
     if (direction === 'desc') {
       sortedArray.reverse();
@@ -120,6 +122,85 @@ function generateRandomData() {
   
     document.getElementById('result').textContent = 'Sorted data: ' + JSON.stringify(sortedArray) + '.';
   
-    localStorage.setItem('algorithm', algorithm);
     localStorage.setItem('direction', direction);
+  });
+
+  function generateBookId() {
+    var id;
+    var letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    do {
+      var randomLetter = letters[Math.floor(Math.random() * letters.length)];
+      id = randomLetter + Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+    } while (bookCollection.find(book => book.id === id));
+    return id;
+  }
+
+  document.getElementById('addBookForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+  
+    var title = document.getElementById('title');
+    var author = document.getElementById('author');
+    var year = document.getElementById('year');
+  
+    var newBook = { id: generateBookId(), title: title.value, author: author.value, year: parseInt(year.value) };
+  
+    // sprawdza, czy książka już istnieje w kolekcji
+    var duplicate = bookCollection.find(function(book) {
+      return book.title === newBook.title && book.author === newBook.author && book.year === newBook.year;
+    });
+  
+    if (!duplicate) {
+      bookCollection.push(newBook); // dodaje nową książkę na końcu tablicy
+  
+      // zapisuje zbiór książek w localStorage
+      localStorage.setItem('bookCollection', JSON.stringify(bookCollection));
+  
+      displayBooks();
+    }
+  
+    // czyszczenie pól formularza
+    title.value = "";
+    author.value = "";
+    year.value = "";
+  });
+  
+  document.getElementById('deleteBookForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+  
+    var bookId = document.getElementById('bookId').value;
+    var bookIndex = bookCollection.findIndex(function(book) {
+      return book.id.toString() === bookId;
+    });
+  
+    if (bookIndex !== -1) {
+      bookCollection.splice(bookIndex, 1); // usuwa książkę
+  
+      // zapisuje zbiór książek w localStorage
+      localStorage.setItem('bookCollection', JSON.stringify(bookCollection));
+  
+      displayBooks(); // aktualizuje wyświetlane dane
+    }
+  
+    // czyszczenie pola formularza
+    document.getElementById('bookId').value = "";
+  });
+
+  document.getElementById('searchForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+  
+    var searchTitle = document.getElementById('searchTitle').value.toLowerCase();
+    var searchAuthor = document.getElementById('searchAuthor').value.toLowerCase();
+    var searchYear = document.getElementById('searchYear').value;
+  
+    var results = bookCollection.filter(function(book) {
+      return (searchTitle === '' || book.title.toLowerCase().includes(searchTitle)) &&
+             (searchAuthor === '' || book.author.toLowerCase().includes(searchAuthor)) &&
+             (searchYear === '' || book.year.toString() === searchYear);
+    });
+  
+    var formattedResults = results.map(function(book) {
+      return 'ID: ' + book.id + ' Tytuł: "' + book.title + '" Autor: "' + book.author + '" Rok: ' + book.year;
+    }).join('<br>');
+  
+    document.getElementById('searchResults').innerHTML = formattedResults;
   });
