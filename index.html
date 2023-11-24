@@ -5,6 +5,7 @@
   <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
+  <div class="container">
   <h2>BIBLIOTEKA APP - DODAWAJ WYSZUKUJ SORTUJ </h2>
   <form id="addBookForm">
     <label for="title">Tytuł:</label>
@@ -31,20 +32,32 @@
     <input type="text" id="bookId" placeholder="Wpisz numer ID książki...">
     <input type="submit" value="Usuń książkę">
   </form>
-  <form id="sortForm">
-    <label for="direction">Kierunek:</label>
-    <select id="direction">
-      <option value="asc">Rosnąco</option>
-      <option value="desc">Malejąco</option>
-    </select>
-    <button type="submit">Sortuj</button>
-  </form>
+  <form id="sortForm" class="sort-form">
+    <div class="form-group">
+        <label for="sortType">Sortuj według:</label>
+        <select id="sortType">
+            <option value="title">Tytuł</option>
+            <option value="author">Autor</option>
+            <option value="year">Rok</option>
+        </select>
+    </div>
+    <div class="form-group">
+      <label for="direction">Kierunek:</label>
+      <select id="direction">
+          <option value="asc">Rosnąco</option>
+          <option value="desc">Malejąco</option>
+      </select>
+  </div>
+  <button type="submit" class="sort-button">Sortuj</button>
+</form>
   <h3>ZBIÓR KSIĄŻEK</h3>
   <div id="data"></div>
   <h3>WYNIKI WYSZUKANIA</h3>
   <div id="searchResults"></div>
   <h3>WYNIKI SORTOWANIA</h3>
   <div id="result"></div>
+</div>
+
   <script src="script.js"></script>
 </body>
 </html>
